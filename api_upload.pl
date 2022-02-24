@@ -5,12 +5,16 @@ binmode STDOUT, ":utf8";
 use HTTP::Request::Common;
 use JSON qw/encode_json/;
 use LWP::UserAgent;
-use Getopt::Std ; getopts 'f:' , \my%o ;
+use Getopt::Std ; getopts 'f:m:' , \my%o ;
 
-$o{f} //= '' ;
+$o{f} //= '' ; # フォルダ名
+$o{m} //= 'plain/text' ; # 
 chomp (my $ACCESS_TOKEN = $ARGV[0] ) ; 
-my $GOOGLE_DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+my $GOOGLE_DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart" ;
 
+my $mimeType = $o{m} ; 
+my $ej = { name => $ARGV[1] , mimeType => $mimeType , $o{f} ne q[] ? (parents  => [ $o{f} ] ): () } ;
+my $EJ = encode_json $ej  ; 
 
 my $ua = LWP::UserAgent->new;
 my $res = $ua->request(
@@ -22,7 +26,7 @@ my $res = $ua->request(
       undef,
       undef,
       'Content-Type' => 'application/json;charset=UTF-8',
-      'Content' => encode_json( { name   => $ARGV[1] , mimeType => 'plain/text', parents  => ['1zT6kPMwhKAY4owb7Eb3t4Nsm2GMJ18a1'], }, ),
+      'Content' => $EJ  #encode_json( %EJ ),
     ],
     file => [ $ARGV[1] ],
   ],
@@ -59,6 +63,10 @@ sub HELP_MESSAGE {
   同じ名前のファイルも複数回、このプログラムを実行すると、新規に次々とGoogleドライブにアップロードされる。少し要注意。
 
  前提的なこと: HTTP::Request::Common を用いる。Net::Google::OAuthを使わない。
+
+  オプション: 
+    -f STR : 指定しないか、空文字だと、グーグル直下のディレクトリになる。
+    -m TYPE : text/csv　などを指定。 未指定なら plain/text ;
 
 出力例: 
 
