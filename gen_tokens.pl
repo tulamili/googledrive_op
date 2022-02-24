@@ -2,7 +2,7 @@
 use 5.030 ;
 use strict;
 use warnings;
-use Getopt::Std ; getopts 'f:', \my%o ;
+use Getopt::Std ; getopts 'a', \my%o ;
 use Net::Google::OAuth;
 
 my $CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
@@ -10,8 +10,8 @@ my $CLIENT_SECRET = "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" ;
 my $SCOPE  = 'drive'; #my $SCOPE  = 'spreadsheets';
 my $EMAIL  = 'tulamili@gmail.com';
 
-do { & main_another ; exit } if 1 eq ($o{f} //'') ;
-do { & main_orig () ; exit } 
+do { & main_another ; exit } if $o{a} ;
+do { & main_orig () ; exit } ;
 
 sub main_orig () { 
     my $oauth = Net::Google::OAuth->new(    -client_id     => $CLIENT_ID,    -client_secret => $CLIENT_SECRET ) ;
@@ -61,7 +61,7 @@ sub HELP_MESSAGE {
      文字列が現れて、それを再び$0 にコピペすることで上記が実行出来る。
    
 
- 別の動作( -f1 の視程による ) : 
+ 別の動作( -a の視程による ) : 
    リフレッシュトークン(半年間有効)から、1時間有効なアクセストークンを生成する(標準出力に出力する)。
     → 約160文字。実行する度に異なるアクセストークンが生成される。
     → ブラウザを用いた認証は必要としないので、手動の作業を必要とはしない。
