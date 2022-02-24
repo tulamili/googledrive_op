@@ -12,9 +12,9 @@ my $EMAIL  = 'tulamili@gmail.com';
 
 do { & main_orig () ; exit } unless $o{a} || $o{r} ;
 
-my $REFLESH_TOKEN = "1//0e8i8kRu5P0PWCgYIARAAGA4SNwF-L9IrZ-F0zJbFcPqIWyVahL0Gtp5spr5yCPM5oXRszgU-SdEkdyVXuKLt8pPyLDJyrKxXNJY" ; 
+my $REFRESH_TOKEN = "1//0e8i8kRu5P0PWCgYIARAAGA4SNwF-L9IrZ-F0zJbFcPqIWyVahL0Gtp5spr5yCPM5oXRszgU-SdEkdyVXuKLt8pPyLDJyrKxXNJY" ; 
 
-do { say $REFLESH_TOKEN ; exit } if $o{r} ;
+do { say $REFRESH_TOKEN ; exit } if $o{r} ;
 do { & main_another ; exit } if $o{a} ;
 
 
@@ -27,7 +27,7 @@ sub main_orig () {
 
 sub main_another() { 
   my $oauth = Net::Google::OAuth->new(    -client_id     => $CLIENT_ID,    -client_secret => $CLIENT_SECRET ) ;
-  my $x1 = $oauth -> refreshToken ( -refresh_token => "1//0e8i8kRu5P0PWCgYIARAAGA4SNwF-L9IrZ-F0zJbFcPqIWyVahL0Gtp5spr5yCPM5oXRszgU-SdEkdyVXuKLt8pPyLDJyrKxXNJY" )  ;
+  my $x1 = $oauth -> refreshToken ( -refresh_token => $REFRESH_TOKEN )  ;
   my $x2 = $oauth -> getAccessToken () ;
   say $x2 ;
 }
