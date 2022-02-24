@@ -5,18 +5,13 @@ use warnings;
 use Getopt::Std ; getopts 'f:', \my%o ;
 use Net::Google::OAuth;
 
-my $CLIENT_ID = "545257978867-91bak1f87u2t5g03609p7koie734hf9i.apps.googleusercontent.com";
-my $CLIENT_SECRET = "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";
-#my $SCOPE  = 'spreadsheets';
-$CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
-$CLIENT_SECRET = "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" ; 
-
-my $SCOPE  = 'drive';
+my $CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
+my $CLIENT_SECRET = "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" ; 
+my $SCOPE  = 'drive'; #my $SCOPE  = 'spreadsheets';
 my $EMAIL  = 'tulamili@gmail.com';
 
 do { & main_another ; exit } if 1 eq ($o{f} //'') ;
-& main_orig () ;
-exit ; 
+do { & main_orig () ; exit } 
 
 sub main_orig () { 
     my $oauth = Net::Google::OAuth->new(    -client_id     => $CLIENT_ID,    -client_secret => $CLIENT_SECRET ) ;
