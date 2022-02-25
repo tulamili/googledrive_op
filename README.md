@@ -8,6 +8,12 @@
 
 #　このプログラムに必要な情報について
 
-1. OAuth2で　Google Cloud Platform のクライアントID　とクライアントシークレットの取得。
+1. OAuth2で　Google Cloud Platform のクライアントID　とクライアントシークレットの**取得**。
    - 方法は、https://sironekotoro.hateblo.jp/entry/2020/10/19/120000 に記載。
    - (このページは念のため、Evernoteのウェブクリップで保存した。)
+
+2. setup_keyvalues.sh の実行
+   - 設定ファイル~/.gcpsetup2202/1　が作成され、そこにOAuth2に必要な情報が読み書きされるようになる。
+  
+3. gen_tokens.pl の実行
+   - オプションの「-w」付きで実行すると、設定ファイルに、後で必要となる情報が読み書きされる。
