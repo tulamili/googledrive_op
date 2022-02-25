@@ -2,8 +2,6 @@
 use 5.030 ; use strict; use warnings; use Data::Dumper;
 use HTTP::Tiny; use JSON; use URI;
 use Getopt::Std ; getopts 'a' , \my%o ; 
-#binmode STDIN,  ":utf8";
-#binmode STDOUT, ":utf8";
 
 my $CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
 my $CLIENT_SECRET = "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" ; 
@@ -44,7 +42,13 @@ sub HELP_MESSAGE {
 
  $0 
 
-下記のような結果を得る。クライアントIDとクライアントシークレットとレフレッシュトークンから、アクセストークンとその追加情報を得る。
+ 主要な機能:
+ 
+   アクセストークンを得る。(そのために3個の情報を必要とする。プログラムに書き入れてある。)
+
+ 実行結果: 
+ 
+   クライアントIDとクライアントシークレットとレフレッシュトークンから、アクセストークンとその追加情報を得る。
 
 # "access_token": "hogehogefoofoobarbar",
 # "expires_in": 3599,
