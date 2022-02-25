@@ -2,11 +2,15 @@
 use 5.030 ; use strict; use warnings;
 use HTTP::Tiny ;
 use JSON ; use URI::Escape ; use URI ;
-use Getopt::Std ; getopts 'g:' , \my%o ;
+use Getopt::Std ; getopts 'g:/' , \my%o ;
 binmode STDOUT, ":utf8";
 
-my $GOOGLE_DRIVE_API = "https://www.googleapis.com/drive/v3/files";
-chomp (my $ACCESS_TOKEN = <> ) ; 
+my $GOOGLE_DRIVE_API = "https://www.googleapis.com/drive/v3/files" ;
+
+my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
+my $ACCESS_TOKEN = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
+
+chomp ( $ACCESS_TOKEN = <> ) if $o{'/'} ; 
 my $count_limit = $o{g} // 2 ; 
 
 # 全てのファイルを取得する
@@ -23,7 +27,7 @@ sub files {
         my $contents = decode_json( $ht->get($uri)->{content} );
         $uri->query_form( access_token => $ACCESS_TOKEN, pageToken => $contents->{nextPageToken} ) ;
         for my $content ( @{ $contents->{files} } ) {
-            print "=" x 20 . sprintf (" %06d", ++ $fnum ) . "\n" ;
+            print  sprintf ("%05d ", ++ $fnum ) . "=" x 20 . "\n" ;
             printf( "%-8s: %s\n", "id",       $content->{id} );
             printf( "%-8s: %s\n", "name",     $content->{name} );
             printf( "%-8s: %s\n", "mimeType", $content->{mimeType} );
@@ -62,6 +66,7 @@ sub HELP_MESSAGE {
 
 　オプション : 
     -g N : 何回ページをたぐるか? 未指定なら2。
+    -/   : アクセストークンは、標準入力から読み取る。設定ファイルからではなく。
 
 その他 : 
   1万個ファイルがあると、全部見せるのに、1分間の時間がかかるであろう。
