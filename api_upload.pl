@@ -5,6 +5,7 @@ use JSON qw/encode_json/;
 use LWP::UserAgent;
 use Getopt::Std ; getopts 'f:m:' , \my%o ;
 binmode STDOUT, ":utf8";
+& HELP_MESSAGE if @ARGV == 0 ;
 $o{f} //= '' ; # フォルダ名
 $o{m} //= 'plain/text' ; # MIMEタイプ
 my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
