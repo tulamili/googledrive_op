@@ -6,7 +6,7 @@ use Getopt::Std ; getopts 'f:' , \my%o;
 use Net::Google::OAuth;
 use Data::Dumper ;
 
-my $CLIENT_ID = "545257978867-91bak1f87u2t5g03609p7koie734hf9i.apps.googleusercontent.com";
+my $CLIENT_ID = "545257978867-91bak1f87u2t5g03609p7koie734hf9i.apps.googleusercontent.com"; # <-  消去済み
 my $CLIENT_SECRET = "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";
 my $SCOPE  = 'spreadsheets';
 my $EMAIL  = 'tulamili@gmail.com';
