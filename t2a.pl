@@ -1,26 +1,23 @@
 #!/usr/bin/perl
 use 5.030 ; use strict; use warnings; use Data::Dumper;
 use HTTP::Tiny; use JSON; use URI;
-use Getopt::Std ; getopts 'a' , \my%o ; 
-
-my $CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
-my $CLIENT_SECRET = "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" ; 
-my $REFRESH_TOKEN = "1//0e8i8kRu5P0PWCgYIARAAGA4SNwF-L9IrZ-F0zJbFcPqIWyVahL0Gtp5spr5yCPM5oXRszgU-SdEkdyVXuKLt8pPyLDJyrKxXNJY" ; 
+use Getopt::Std ; getopts 'aw' , \my%o ; 
+my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
+my $CLIENT_ID     = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54525797.....34dseo.apps.googleusercontent.com" ;
+my $CLIENT_SECRET = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOCSP...YUbpe1" ; 
+my $REFRESH_TOKEN = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; 
+#my $ACCESS_TOKEN  = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; 
 my $URI = URI->new('https://oauth2.googleapis.com/token'); # $URI = URI->new('https://www.googleapis.com/oauth2/v4/token'); ← どちらでも動く。
-
 my $ht = HTTP::Tiny->new();
 my $response = $ht -> request (
   'POST', $URI,
-  { content => 
-    encode_json( { client_id => $CLIENT_ID, client_secret => $CLIENT_SECRET, grant_type    => 'refresh_token', refresh_token => $REFRESH_TOKEN } )
-  }
+  { content => encode_json( { client_id => $CLIENT_ID, client_secret => $CLIENT_SECRET, grant_type    => 'refresh_token', refresh_token => $REFRESH_TOKEN } ) }
 ) ;
-
 my $json = decode_json( $response->{content} );
 print Dumper $json unless $o{a} ;
-say $json->{access_token} if $o{a} ;
-
-
+my $ACCESS_TOKEN = $json -> {access_token} ;
+say $ACCESS_TOKEN if $o{a} ;
+qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$ACCESS_TOKEN/' $gfile ] if $o{w} ; 
 
 ## ヘルプ (オプション --help が与えられた時に、動作する)
 sub VERSION_MESSAGE {}
@@ -44,7 +41,12 @@ sub HELP_MESSAGE {
 
  主要な機能:
  
-   アクセストークンを得る。(そのために3個の情報を必要とする。プログラムに書き入れてある。)
+   アクセストークンを得て、Dumper で表示する。
+
+オプション: 
+
+  -a : アクセストークンのみを得る。
+  -w : 設定ファイルにアクセストークンを書き込む。
 
  実行結果: 
  
@@ -55,5 +57,3 @@ sub HELP_MESSAGE {
 # "scope": "https://www.googleapis.com/auth/drive",
 # "token_type": "Bearer"
 
-オプション: 
-  -a : アクセストークンのみを得る。
