@@ -17,7 +17,7 @@ exit ;
 
 sub f_each ( $ ) { 
   my $mimeType = $o{m} ; 
-  my $ej0 = { name => $ARGV[1] , mimeType => $mimeType , $o{f} ne q[] ? ( parents  => [ $o{f} ] ): () } ;
+  my $ej0 = { name => $_[0] , mimeType => $mimeType , $o{f} ne q[] ? ( parents  => [ $o{f} ] ): () } ;
   my $ej1 = encode_json $ej0 ; 
   my $ua = LWP::UserAgent->new ;
   my $res = $ua -> request (
@@ -26,7 +26,7 @@ sub f_each ( $ ) {
     Authorization =>  "Bearer $ACCESS_TOKEN" ,
     Content => [
       metadata => [ undef, undef , 'Content-Type' => 'application/json;charset=UTF-8' , 'Content' => $ej1 ] ,
-      file => [ $ARGV[1] ] ,
+      file => [ $_[0] ] ,
     ] ,
   ) ;
   print  "\$res->code = ", $res->code . "\n";
