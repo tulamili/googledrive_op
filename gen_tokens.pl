@@ -7,6 +7,7 @@ use Net::Google::OAuth;
 
 my $CLIENT_ID = "545257978867-tt7539v8nuejtk6ng44en80l6334dseo.apps.googleusercontent.com" ;
 my $CLIENT_SECRET = "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" ; 
+# 上記2個は、デスクトップクライアント2として取得。2022年2月17日に。
 my $SCOPE  = 'drive'; #my $SCOPE  = 'spreadsheets';
 my $EMAIL  = 'tulamili@gmail.com';
 
