@@ -4,7 +4,7 @@ use Data::Dumper;
 use Carp;
 use Net::Google::Drive ;
 use Getopt::Std ; getopts 'f:',\my%o ;
-$o{f} //= '*' ; # 探すファイルの名前(のようだ)
+$o{f} //= '*' ; # 探すファイルの名前(のようである)
 binmode STDOUT, ":utf8"; # binmode STDIN,  ":utf8";
 my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
 my $CLIENT_ID     = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54525797.....34dseo.apps.googleusercontent.com" ;
@@ -13,7 +13,7 @@ my $REFRESH_TOKEN = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$/
 my $ACCESS_TOKEN  = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; 
 my $disk = Net::Google::Drive->new(  -client_id => $CLIENT_ID, -client_secret => $CLIENT_SECRET, -access_token  => $ACCESS_TOKEN, -refresh_token => $REFRESH_TOKEN, );
 # ファイル一覧を出力。
-my $file_name = $o{f} ; #'11_読み物/121010fukui.pdf';    # アスタリスクで全部のファイルの情報を取ってくる
+my $file_name = $o{f} ; ## アスタリスクで全部のファイルの情報を取ってくる。ただし最大100個のようである。
 my $files = $disk->searchFileByNameContains( -filename => $file_name ) or croak "File '$file_name' not found";
 my $fnum = 0 ;
 #do { say '=' x 20 . sprintf (' %04d', ++ $fnum) ; say $_->{id}; say $_->{name}; say $_->{mimeType}; say $_->{kind}; say '=' x 20 } for @{$files} ;
@@ -46,14 +46,17 @@ do { say join"\t",sprintf('%03d',++$fnum),$_->{kind},$_->{id},qq["$_->{name}"],$
  $0 
    アクセストークンは標準入力から。(メアドは不要。4個の情報が必要。)
    Net::Google::Drive を使う。
-   100個のファイルを取り出す。
+   最大100個のファイルを取り出す。
 
    ワイルドカードを使ったファイル名で検索ができる。IDを突き止めることが出来る。
-   (そのファイルの親フォルダとか、あるフォルダが含むファイルとかの情報も欲しいのだが。)
-   検索するとしても、1.3万個のファイルから取り出してくれるのだろうか? 限られた特定の100個だけからということは無かろうか?
 
-  オプション: 
+オプション: 
     -f ファイル名(ワイルドカードなどか使える様だが) 
+
+開発メモ: 
+   * そのファイルの親フォルダとか、あるフォルダが含むファイルとかの情報も欲しい。
+   * 検索するとしても、1.3万個のファイルから取り出してくれるのだろうか? 限られた特定の100個だけからということは無かろうか?
+   * ファイルアップ/ダウンロードの機能のヒントは、このプログラム内にコメントとして残した。
 
 =cut
 
