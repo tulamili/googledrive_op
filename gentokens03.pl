@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-use 5.030 ;
+#use 5.030 ;
 use strict;
 use warnings;
 use Getopt::Std ; getopts 'arw', \my%o ;
