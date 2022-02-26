@@ -2,6 +2,7 @@
 #use 5.030 ;
 use strict;
 use warnings;
+use feature 'say' ;
 use Getopt::Std ; getopts 'arw', \my%o ;
 use Net::Google::OAuth;
 
