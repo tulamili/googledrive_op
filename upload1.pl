@@ -69,7 +69,7 @@ sub HELP_MESSAGE {
 # 200
 # {
 #  "kind": "drive#file",
-#  "id": "19f2RrocH4I3Mdig0LkmNPghJDZnmq35f",
+#  "id": "1...(全部で33文字-_英数大文字小文字)bag",
 #  "name": "hoge.txt",
 #  "mimeType": "plain/text"
 # }
