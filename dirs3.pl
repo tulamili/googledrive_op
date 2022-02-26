@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 #use 5.030 ; 
 use strict; use warnings;
+use feature 'say' ; 
 use Data::Dumper ; 
 use Getopt::Std ; getopts 'g:/D' , \my%o ;
 use HTTP::Tiny ;
