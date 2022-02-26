@@ -9,7 +9,7 @@ use Getopt::Std ; getopts 'f:m:' , \my%o ;
 binmode STDOUT, ":utf8";
 & HELP_MESSAGE if @ARGV == 0 ;
 $o{f} //= '' ; # フォルダ名
-$o{m} //= 'plain/text' ; # MIMEタイプ
+$o{m} //= 'text/plain' ; # MIMEタイプ
 my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
 my $ACCESS_TOKEN = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
 chomp ( $ACCESS_TOKEN = <> ) if $o{'/'} ; #
@@ -63,7 +63,7 @@ sub HELP_MESSAGE {
   オプション: 
     -/     : アクセストークンを標準入力から読み取る。
     -f STR : 指定しないか、空文字だと、グーグル直下のディレクトリになる。
-    -m TYPE : text/csv　などを指定。 未指定なら plain/text ;
+    -m TYPE : text/csv　などを指定。 未指定なら text/plain ;
 
 
 出力例: 
@@ -72,6 +72,6 @@ sub HELP_MESSAGE {
 # {
 #  "kind": "drive#file",
 #  "id": "1...(全部で33文字-_英数大文字小文字)bag",
-#  "name": "hoge.txt",
-#  "mimeType": "plain/text"
+#  "name": "test.txt",
+#  "mimeType": "text/plain"
 # }
