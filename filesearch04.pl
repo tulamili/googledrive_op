@@ -1,12 +1,13 @@
 #!/usr/bin/perl
 #use 5.030 ; 
-use strict; use warnings;
-use Data::Dumper;
-use Carp;
+use strict; use warnings ;
+use feature 'say' ;
+use Data::Dumper ;
+use Carp ;
 use Net::Google::Drive ;
 use Getopt::Std ; getopts 'f:',\my%o ;
 $o{f} //= '*' ; # 探すファイルの名前(のようである)
-binmode STDOUT, ":utf8"; # binmode STDIN,  ":utf8";
+binmode STDOUT, ":utf8" ; # binmode STDIN,  ":utf8"　;
 my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
 my $CLIENT_ID     = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54525797.....34dseo.apps.googleusercontent.com" ;
 my $CLIENT_SECRET = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOCSP...YUbpe1" ; 
