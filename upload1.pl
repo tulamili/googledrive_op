@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 # use 5.026 ; 
 use strict; use warnings;
+use feature 'say' ; 
 use HTTP::Request::Common;
 use JSON qw/encode_json/;
 use LWP::UserAgent;
