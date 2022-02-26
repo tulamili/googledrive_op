@@ -53,7 +53,7 @@ sub HELP_MESSAGE {
  
    クライアントIDとクライアントシークレットとレフレッシュトークンから、アクセストークンとその追加情報を得る。
 
-# "access_token": "hogehogefoofoobarbar",
+# "access_token": "ya2..(全部で165文字ハイフンピリオドアンダーバー有り英数大文字小文字で、先頭5文字はいつも同じに見える).....g",
 # "expires_in": 3599,
 # "scope": "https://www.googleapis.com/auth/drive",
 # "token_type": "Bearer"
