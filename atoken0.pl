@@ -1,5 +1,6 @@
 #!/usr/bin/perl
-use 5.030 ; use strict; use warnings; use Data::Dumper;
+use 5.030 ; 
+use strict; use warnings; use Data::Dumper;
 use HTTP::Tiny; use JSON; use URI;
 use Getopt::Std ; getopts 'aw' , \my%o ; 
 my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
