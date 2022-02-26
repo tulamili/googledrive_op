@@ -70,26 +70,29 @@ sub HELP_MESSAGE {
 
  $0  ファイルID:ファイル名 [ファイルID:ファイル名] [ファイルID:ファイル名] .. 
 
-  指定したファイルを指定したGoogleドライブのフォルダーにアップロードする。
-  各引数の書式は次のようになる。
+  Googleドライブのフォルダーの指定するファイルIDにローカルのファイルを更新する。
+  各引数の書式は次のようになる。空白文字は含めないこと。
     グーグルドライブ上のファイルID : ローカルのファイル名
 
- 前提的なこと: 
-    このプログラムは、HTTP::Request::Common を用いる。Net::Google::OAuthを使っていない。
-
-  オプション: 
+オプション: 
 
    -/ : アクセストークンを標準入力から読み取る。
 
+前提的なこと: 
 
-  開発上のメモ: 
-    複数のファイルに対応したい。
+   このプログラムは、HTTP::Request::Common を用いる。Net::Google::OAuthを使っていない。
 
+
+開発上のメモ: 
+
+   複数のファイルに対応したい。
+
+　標準出力への出力の例: 
 
 # 200
 # {
 #  "kind": "drive#file",
-#  "id": "19f2RrocH4I3Mdig0LkmNPghJDZnmq35f",
-#  "name": "hoge.txt",
-#  "mimeType": "plain/text"
+#  "id": "1..(33文字)....f",
+#  "name": "example.txt",
+#  "mimeType": "text/plain"
 # }
