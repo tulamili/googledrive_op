@@ -14,9 +14,7 @@ my $GOOGLE_DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3/files/
 my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
 my $atoken = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
 chomp ( $atoken = <> ) if $o{'/'} ; # my $atoken = $ARGV[0] ;
-my $bearer = join ' ', 'Bearer', $atoken ;
 & f_each ( split /:/, $_ , 2 ) for @ARGV ; 
-
 exit 0 ; 
 
 sub f_each ( $$ ) { 
@@ -26,7 +24,7 @@ sub f_each ( $$ ) {
   my $res = $ua->request(
     PATCH $URI,
     'Content-Type' => 'multipart/form-data',
-    Authorization  => $bearer,
+    Authorization  => "Bearer $atoken" ,
     Content    => [
       metadata => [
         undef, undef, # undef => undef と書くことは出来るだろうか?
