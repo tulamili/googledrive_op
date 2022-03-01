@@ -1,8 +1,14 @@
-重要なURL: 
+重要なURL : 
 - [Google Cloud Platform のコンソール](https://console.cloud.google.com/)
 
+正式に参照すべき文書 : 
+- [OAuth2.0を使用してGoogleAPIにアクセスする ](https://developers.google.com/identity/protocols/oauth2#webserver)
+- [Upload file data](https://developers.google.com/drive/api/v3/manage-uploads)
+- [API Reference](https://developers.google.com/drive/api/v2/reference)
 
-参考にした記事: 
+
+
+参考にした記事 : 
 -  [PerlからGoogleSheetを読み書きする・・・ための3種のTOKENを手に入れる](https://sironekotoro.hateblo.jp/entry/2020/10/19/120000)
 -  [Perl から Google Drive にファイルをあげたりダウンロードしたり一覧を取ったり](https://sironekotoro.hateblo.jp/entry/2020/10/25/191342)
 -  [Perl から Google Drive にファイルを「上書きっぽい感じ」でアップロードする](https://sironekotoro.hateblo.jp/entry/2020/11/01/165457)
