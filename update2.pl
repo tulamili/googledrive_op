@@ -13,7 +13,7 @@ use Getopt::Std ; getopts 'i:',\my%o ;
 #my $target_fileid = $ARGV[0] ;
 
 my $GOOGLE_DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3/files/";
-my $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイルの名前
+my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
 my $ACCESS_TOKEN = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
 chomp ( $ACCESS_TOKEN = <> ) if $o{'/'} ; # my $ACCESS_TOKEN = $ARGV[0] ;
 my $bearer = join ' ', ( 'Bearer', $ACCESS_TOKEN );
