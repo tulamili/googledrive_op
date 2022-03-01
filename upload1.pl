@@ -11,8 +11,8 @@ binmode STDOUT, ":utf8";
 $o{f} //= '' ; # フォルダ名
 $o{m} //= 'text/plain' ; # MIMEタイプ
 my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
-my $ACCESS_TOKEN = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
-chomp ( $ACCESS_TOKEN = <> ) if $o{'/'} ; #
+my $atoken = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
+chomp ( $atoken = <> ) if $o{'/'} ; #
 my $GOOGLE_DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart" ;
 & f_each ( $_ ) for @ARGV ; 
 exit ;
@@ -25,7 +25,7 @@ sub f_each ( $ ) {
   my $res = $ua -> request (
     POST $GOOGLE_DRIVE_UPLOAD_API ,
     'Content-Type' => 'multipart/form-data' ,
-    Authorization =>  "Bearer $ACCESS_TOKEN" ,
+    Authorization =>  "Bearer $atoken" ,
     Content => [
       metadata => [ undef, undef , 'Content-Type' => 'application/json;charset=UTF-8' , 'Content' => $ej1 ] ,
       file => [ $_[0] ] ,

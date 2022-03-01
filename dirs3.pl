@@ -11,14 +11,14 @@ binmode STDOUT, ":utf8";
 my $GOOGLE_DRIVE_API = "https://www.googleapis.com/drive/v3/files" ;
 
 my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
-my $ACCESS_TOKEN = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
+my $atoken = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
 
-chomp ( $ACCESS_TOKEN = <> ) if $o{'/'} ; 
+chomp ( $atoken = <> ) if $o{'/'} ; 
 my $count_limit = $o{g} // 2 ; 
 
 # 全てのファイルを取得する
 my $uri = URI -> new ( $GOOGLE_DRIVE_API ) ;
-$uri -> query_form ( access_token => $ACCESS_TOKEN ) ;
+$uri -> query_form ( access_token => $atoken ) ;
 & files ( $uri ) ;
 
 sub files {
@@ -29,7 +29,7 @@ sub files {
   while ( $count < $count_limit ) {
     my $contents = decode_json( $ht->get($uri)->{content} );
     do { print Dumper $contents ; $contents->{error} ? last : next } if $o{D} ;
-    $uri->query_form( access_token => $ACCESS_TOKEN, pageToken => $contents->{nextPageToken} ) ;
+    $uri->query_form( access_token => $atoken, pageToken => $contents->{nextPageToken} ) ;
     for my $content ( @{ $contents->{files} } ) {
       print  sprintf ("%05d ", ++ $fnum ) . "=" x 20 . "\n" ;
       printf( "%-8s: %s\n", "id",     $content->{id} );

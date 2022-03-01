@@ -8,21 +8,21 @@ use HTTP::Tiny ;
 use JSON ; 
 use URI ;
 my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
-my $CLIENT_ID     = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54.....apps.googleusercontent.com" ;
-my $CLIENT_SECRET = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOC....." ; 
-my $REFRESH_TOKEN = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; 
-#my $ACCESS_TOKEN  = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # 記録したものと比較したい場合のこの行のコードは使うかも。
+my $cid = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54.....apps.googleusercontent.com" ;
+my $csec = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOC....." ; 
+my $rtoken = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; 
+#my $atoken = qx [ sed -ne's/^ACCESS_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # 記録したものと比較したい場合のこの行のコードは使うかも。
 my $URI = URI->new('https://oauth2.googleapis.com/token'); # $URI = URI->new('https://www.googleapis.com/oauth2/v4/token'); ← どちらでも動く。
 my $ht = HTTP::Tiny->new();
 my $response = $ht -> request (
   'POST', $URI,
-  { content => encode_json( { client_id => $CLIENT_ID, client_secret => $CLIENT_SECRET, grant_type    => 'refresh_token', refresh_token => $REFRESH_TOKEN } ) }
+  { content => encode_json( { client_id => $cid, client_secret => $csec, grant_type    => 'refresh_token', refresh_token => $rtoken } ) }
 ) ;
 my $json = decode_json( $response->{content} );
 print Dumper $json unless $o{a} ;
-my $ACCESS_TOKEN = $json -> {access_token} ;
-say $ACCESS_TOKEN if $o{a} ;
-qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$ACCESS_TOKEN/' $gfile ] if $o{w} ; 
+my $atoken = $json -> {access_token} ;
+say $atoken if $o{a} ;
+qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$atoken/' $gfile ] if $o{w} ; 
 
 ## ヘルプ (オプション --help が与えられた時に、動作する)
 sub VERSION_MESSAGE {}

@@ -8,38 +8,38 @@ use Net::Google::OAuth;
 
 my $gfile = do { use FindBin qw [ $Bin ] ; use lib $FindBin::Bin ; use gdrv ; $gdrv::gfile } ;  # GCPで使う合言葉を収めたファイルの名前
 
-my $CLIENT_ID     = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54525797.....34dseo.apps.googleusercontent.com" ;
-my $CLIENT_SECRET = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOCSP...YUbpe1" ; 
-my $EMAIL         = qx [ sed -ne's/^EMAIL[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
-my $SCOPE         = 'drive'; #my $SCOPE  = 'spreadsheets';
+my $cid = qx [ sed -ne's/^CLIENT_ID[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"54525797.....34dseo.apps.googleusercontent.com" ;
+my $csec = qx [ sed -ne's/^CLIENT_SECRET[ =:\t]*//p' $gfile ] =~ s/\n$//r ; # "GOCSP...YUbpe1" ; 
+my $EMAIL = qx [ sed -ne's/^EMAIL[ =:\t]*//p' $gfile ] =~ s/\n$//r ;
+my $SCOPE = 'drive'; #my $SCOPE  = 'spreadsheets';
 
 do { & main_orig () ; exit } unless $o{a} || $o{r} ;
 
-my $REFRESH_TOKEN = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"1//0e8......yLDJyrKxXNJY" ; 
-do { say $REFRESH_TOKEN ; exit } if $o{r} ;
+my $rtoken = qx [ sed -ne's/^REFRESH_TOKEN[ =:\t]*//p' $gfile ] =~ s/\n$//r ; #"1//0e8......yLDJyrKxXNJY" ; 
+do { say $rtoken ; exit } if $o{r} ;
 do { & main_another ; exit } if $o{a} ;
 
 
 # クライアントID とクライアントシークレット、メールアドレス、スコープ(計4個の情報)から、アクセストークンとリフレッシュトークンを表示する。
 sub main_orig () { 
     say 'Paste the following url into your browser. Push "Continue" button twice. Then copy the URL on your browser to paste here.' ;
-    my $oauth = Net::Google::OAuth->new(    -client_id     => $CLIENT_ID,    -client_secret => $CLIENT_SECRET ) ;
-    $oauth->generateAccessToken(    -scope => $SCOPE,    -email => $EMAIL,) ;
-    my $ACCESS_TOKEN = $oauth -> getAccessToken () ;
-    my $REFRESH_TOKEN = $oauth -> getRefreshToken () ; 
-    print "This is ACCESS TOKEN:\n"; print "=" x 20 . "\n"; print $ACCESS_TOKEN . "\n"; print "=" x 20 . "\n" ;
-    print "This is REFRESH TOKEN:\n";  print "=" x 20 . "\n"; print $REFRESH_TOKEN . "\n"; print "=" x 20 . "\n" ;
-    qx [ sed -i.bak -e's|^\\(REFRESH_TOKEN[ =:\t]*\\).*\$|\\1$REFRESH_TOKEN|' $gfile ] if $o{w} ; # リフレッシュトークンでは途中で/があるので、このsed文では/を使わず|を用いた。
-    qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$ACCESS_TOKEN/' $gfile ] if $o{w} ; 
+    my $oauth = Net::Google::OAuth->new( -client_id => $cid, -client_secret => $csec ) ;
+    $oauth->generateAccessToken( -scope => $SCOPE, -email => $EMAIL ) ;
+    my $atoken = $oauth -> getAccessToken () ;
+    my $rtoken = $oauth -> getRefreshToken () ; 
+    print "This is ACCESS TOKEN:\n"; print "=" x 20 . "\n"; print $atoken . "\n"; print "=" x 20 . "\n" ;
+    print "This is REFRESH TOKEN:\n";  print "=" x 20 . "\n"; print $rtoken . "\n"; print "=" x 20 . "\n" ;
+    qx [ sed -i.bak -e's|^\\(REFRESH_TOKEN[ =:\t]*\\).*\$|\\1$rtoken|' $gfile ] if $o{w} ; # リフレッシュトークンでは途中で/があるので、このsed文では/を使わず|を用いた。
+    qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$atoken/' $gfile ] if $o{w} ; 
 }
 
 # クライアントIDとクライアントシークレット、リフレッシュトークン(計3個の情報)から、アクセストークンを取得する。
 sub main_another() { 
-  my $oauth = Net::Google::OAuth->new(    -client_id     => $CLIENT_ID,    -client_secret => $CLIENT_SECRET ) ;
-  my $x1 = $oauth -> refreshToken ( -refresh_token => $REFRESH_TOKEN )  ;
-  my $ACCESS_TOKEN = $oauth -> getAccessToken () ;
-  say $ACCESS_TOKEN ;
-  qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$ACCESS_TOKEN/' $gfile ] if $o{w} ; 
+  my $oauth = Net::Google::OAuth->new( -client_id => $cid, -client_secret => $csec ) ;
+  my $x1 = $oauth -> refreshToken ( -refresh_token => $rtoken )  ;
+  my $atoken = $oauth -> getAccessToken () ;
+  say $atoken ;
+  qx [ sed -i.bak -e's/^\\(ACCESS_TOKEN[ =:\t]*\\).*\$/\\1$atoken/' $gfile ] if $o{w} ; 
   # qxが\を解釈するので、この行を編集するときは要注意。
   # qxに sed で行末を表す$を渡す際に、$が何かPerlの変数として解釈されないように、\が前に必要。
   # sed では Mac だと -i に引数が必要。
