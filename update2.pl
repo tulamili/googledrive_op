@@ -29,25 +29,16 @@ sub f_each ( $$ ) {
     Authorization  => $bearer,
     Content    => [
       metadata => [
-        undef, undef,
+        undef, undef, # undef => undef と書くことは出来るだろうか?
         'Content-Type' => 'application/json;charset=UTF-8',
-        'Content'    => encode_json(
-          {
-            # name   => 'hogefuga.txt',
-            #  mimeType => 'plain/text',
-            #  parents  => ['10kCqEUmWsWlqMdP_vF9pDGrQXFVZ-Lvr'],
-            #  id => $target_fileid,
-          },
-        ),
+        'Content' => encode_json( {} ) #name=>'temp.txt', mimeType=>'text/plain', parents  => ['10_33chars_in_total'], id => $target_fileid},
       ],
-      file => [ $_[1] ] #["./hoge.txt"],
+      file => [ $_[1] ] #["./anotherName.txt"],
     ],
   );
-
   print $res->code . "\n";
   print $res->content . "\n";
 }
-
 
 ## ヘルプ (オプション --help が与えられた時に、動作する)
 sub VERSION_MESSAGE {}
