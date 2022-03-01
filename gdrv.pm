@@ -6,8 +6,8 @@ our $gfile = '~/.gcpsetup2202/1' ; # GCPで使う合言葉を収めたファイ�
 #package gdrv ; 
 #use strict ; 
 #use warnings ; 
-use Exporter 'import' ; 
+#use Exporter 'import' ; 
 
 #package gdrv ;
-our @EXPORT =  [ $main::gfile ] ; 
+#our @EXPORT =  [ $main::gfile ] ; 
 1 ; 
