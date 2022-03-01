@@ -15,3 +15,4 @@
 
 参考になるかも :
 - [Google API 第32回 | 2016年6月16日](https://vintage.ne.jp/blog/2016/06/919)
+- [みるくあいらんどっ! > 和訳 > google関係 > Drive API > api > v3](https://www.milk-island.net/translate/ggd/drive/api/v3/manage-downloads.html)
